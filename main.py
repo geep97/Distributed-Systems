@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.v1.router import r
+from api.v1.router import jobs
+
+
+
 
 
 
@@ -12,6 +15,7 @@ app.add_middleware(
     allow_methods=["*"],
 )
 
+app.include_router(jobs.router)
 
 
 
