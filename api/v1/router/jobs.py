@@ -7,18 +7,18 @@ router =   APIRouter(tags = ["jobs"])
 
 
 class JobStub(BaseModel):
-    status : str
-    job_id : int
+    job_type : str
+    payload : str
 
 
 
 @router.get(
     "/jobs",)
 
-def jobs(  ):
-    return  [{"id":1,"status" :"queued"},
-             {"id":2,"status" :"processing"},
-             {"id":3,"status" :"failed"},]
+def jobs( ):
+    return  [{"job_id":1,"status" :"queued"},
+             {"job_id":2,"status" :"processing"},
+             {"job_id":3,"status" :"failed"},]
 
 
 
@@ -34,7 +34,9 @@ def look_jobs(job_id:int):
 @router.post("/jobs",)
 def create_job(job:JobStub):
     return {
-        "job_id": job.job_id,
-        "status": job.status
+
+        "job_type": job.job_type,
+        "payload": job.payload,
+        "job_id": 99, "status": "queued"
 
     }
