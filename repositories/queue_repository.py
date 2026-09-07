@@ -10,7 +10,7 @@ async def list_jobs(db: AsyncSession):
     return result.scalars().all()
 
 
-async def create_job(db:AsyncSession, job_type:str,payload:dict):
+async def create_new_job(db:AsyncSession, job_type:str,payload:dict):
     new_job = Job(type=job_type,payload=payload)
 
     db.add(new_job)

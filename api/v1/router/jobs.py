@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Depends
 from pydantic import BaseModel
-
+from repositories.queue_repository import (create_new_job,list_jobs,get_job)
+from core.db import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 router =   APIRouter(tags = ["jobs"])
@@ -15,28 +17,15 @@ class JobStub(BaseModel):
 @router.get(
     "/jobs",)
 
-def jobs( ):
-    return  [{"job_id":1,"status" :"queued"},
-             {"job_id":2,"status" :"processing"},
-             {"job_id":3,"status" :"failed"},]
+async def jobs(db: AsyncSession = Depends(get_db)):
+   return await (list_jobs(db))
 
 
 
 @router.get("/jobs/{job_id}")
-def look_jobs(job_id:int):
-    return {
-        "job_id": job_id,
-        "status": "queued",
-
-    }
-
+async def look_jobs(job_id:int,db:AsyncSession = Depends(get_db)):
+    return await get_job(db, job_id)
 
 @router.post("/jobs",)
-def create_job(job:JobStub):
-    return {
-
-        "job_type": job.job_type,
-        "payload": job.payload,
-        "job_id": 99, "status": "queued"
-
-    }
+async def create_job(job:JobStub,db:AsyncSession = Depends(get_db)):
+    return await create_new_job(db, job.job_type, job.payload)
