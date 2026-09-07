@@ -10,7 +10,7 @@ router =   APIRouter(tags = ["jobs"])
 
 class JobStub(BaseModel):
     job_type : str
-    payload : str
+    payload : dict
 
 
 
